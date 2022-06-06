@@ -116,3 +116,28 @@ Deno.test({
     }
 });
 
+Deno.test({
+    name: 'util.concatUint8Arrays.sumOfInputLengthShouldEqualOutputLength',
+    fn: () => {
+        const v1 = [new Uint8Array([1]),new Uint8Array([4,5]),new Uint8Array([0])]
+        const v2 = [new Uint8Array([1,9,2]),new Uint8Array([5]),new Uint8Array([0,1,2])]
+        assertEquals(util.concactUint8Arrays(v1).length, v1.reduce((p, c) => p += c.length, 0));
+        assertEquals(util.concactUint8Arrays(v2).length, v2.reduce((p, c) => p += c.length, 0));
+    }
+});
+
+Deno.test({
+    name: 'util.concatUint8Arrays.output.type',
+    fn: () => {
+        assertEquals(util.concactUint8Arrays([]) instanceof Uint8Array, true);
+    }
+});
+
+Deno.test({
+    name: 'util.concatUint8Arrays.output.length',
+    fn: () => {
+        assertEquals(util.concactUint8Arrays([new Uint8Array([5,2,3]), new Uint8Array([3,5])]), new Uint8Array([5,2,3,3,5]));
+        assertEquals(util.concactUint8Arrays([new Uint8Array([0,1]), new Uint8Array([22,234])]), new Uint8Array([0,1,22,234]));
+    }
+});
+

@@ -17,3 +17,11 @@ export function convertUint8ArraytoUint32(a: Uint8Array) {
         (a[a.length - 3] << 16) | 
         (a[a.length - 4] << 24)) >>> 0;
 }
+
+export function concactUint8Arrays(a: Array<Uint8Array>): Uint8Array {
+    const arr: number[] = [];
+    return new Uint8Array(a.reduce((a,c) => {
+        a.push(...c);
+        return a;
+    }, arr))
+}
