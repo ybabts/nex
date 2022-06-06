@@ -1,4 +1,5 @@
 
+// Big Endian
 export function convertUint32toUint8Array(n: number): Uint8Array {
     if(n < 0 || n > 4294967295) throw new RangeError;
     return new Uint8Array([
