@@ -25,3 +25,12 @@ export function concactUint8Arrays(a: Array<Uint8Array>): Uint8Array {
         return a;
     }, arr))
 }
+
+export function subsecUint8Array(a: Uint8Array, l: Array<number>): Array<Uint8Array> {
+    if(a.length === 0 || l.length === 0) throw new RangeError;
+    if(a.length !== l.reduce((a,c) => a += c, 0)) throw new RangeError;
+    return l.map((v, i,) => {
+        const p = l.slice(0,i).reduce((a,c) => a += c, 0);
+        return a.slice(p, p + v)
+    })
+}

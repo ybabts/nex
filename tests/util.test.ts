@@ -141,3 +141,50 @@ Deno.test({
     }
 });
 
+Deno.test({
+    name: 'util.subsecUint8Array.input.isZero',
+    fn: () => {
+        try {
+            util.subsecUint8Array(new Uint8Array(0),[0]);
+            fail();
+        } catch(e) {
+            assertEquals(e instanceof RangeError, true);
+        }
+    }
+});
+
+Deno.test({
+    name: 'util.subsecUint8Array.input.isNotEqual',
+    fn: () => {
+        try {
+            util.subsecUint8Array(new Uint8Array([2,0,8,4]),[2,1]);
+            fail();
+        } catch(e) {
+            assertEquals(e instanceof RangeError, true);
+        }
+    }
+});
+
+Deno.test({
+    name: 'util.subsecUint8Array.inputLengthsEqualtoOutputLengths',
+    fn: () => {
+        assertEquals(util.subsecUint8Array(new Uint8Array([5,12,5,67]), [2,1,1]).length, 3);
+        assertEquals(util.subsecUint8Array(new Uint8Array([5,12,5,67,24,0]), [2,1,1,2]).length, 4);
+    }
+});
+
+Deno.test({
+    name: 'util.subsecUint8Array.inputLengthsEqualtoOutputLengths',
+    fn: () => {
+        assertEquals(util.subsecUint8Array(new Uint8Array([5,12,5,67]), [2,1,1]).reduce((a,c) => a+= c.length, 0), 4);
+        assertEquals(util.subsecUint8Array(new Uint8Array([5,12,5,67,24,0]), [2,1,1,2]).reduce((a,c) => a+= c.length, 0), 6);
+    }
+});
+
+Deno.test({
+    name: 'util.subsecUint8Array.output.value',
+    fn: () => {
+        assertEquals(util.subsecUint8Array(new Uint8Array([5,12,5,67]), [2,1,1]), [new Uint8Array([5,12]), new Uint8Array([5]), new Uint8Array([67])]);
+        assertEquals(util.subsecUint8Array(new Uint8Array([5,12,5,67,24,0]), [2,1,1,2]), [new Uint8Array([5,12]), new Uint8Array([5]), new Uint8Array([67]), new Uint8Array([24,0])]);
+    }
+});
