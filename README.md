@@ -1,4 +1,4 @@
-![alt-text](https://repository-images.githubusercontent.com/500573894/77b08f9e-c04d-4330-90ae-9275aa2afd67)
+[![alt-text](https://repository-images.githubusercontent.com/500573894/77b08f9e-c04d-4330-90ae-9275aa2afd67)](https://github.com/ybabts/nex/blob/master/assets/nex_social_preview.png?raw=true)
 
 # What is Nex?
 
