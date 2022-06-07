@@ -371,3 +371,41 @@ Deno.test({
     }
 });
 
+Deno.test({
+    name: 'util.convertSafeNumberstoUint64.input.underflow',
+    fn: () => {
+        try {
+            util.convertSafeNumberstoUint64([-200, -40]);
+            fail();
+        } catch(e) {
+            assertEquals(e instanceof RangeError, true);
+        }
+    }
+});
+
+Deno.test({
+    name: 'util.convertSafeNumberstoUint64.input.overflow',
+    fn: () => {
+        try {
+            util.convertSafeNumberstoUint64(Array(2049).fill(9007199254740991));
+            fail();
+        } catch(e) {
+            assertEquals(e instanceof RangeError, true);
+        }
+    }
+});
+
+Deno.test({
+    name: 'util.convertSafeNumberstoUint64.output.type',
+    fn: () => {
+        assertEquals(typeof util.convertSafeNumberstoUint64([456,4856161,153112]) === 'bigint', true);
+    }
+});
+
+Deno.test({
+    name: 'util.convertSafeNumberstoUint64.output.value',
+    fn: () => {
+        assertEquals(util.convertSafeNumberstoUint64([456,4856161,153112]), 5009729n);
+        assertEquals(util.convertSafeNumberstoUint64([4511321136,649847704856161,105485653112]), 649957701830409n);
+    }
+});
