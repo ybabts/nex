@@ -469,7 +469,15 @@ Deno.test({
     }
 });
 
-// The way that this avoids going below zero might cause a bug later on
+Deno.test({
+    name: 'DenoSeekwithArray.output.type',
+    fn: () => {
+        const file = Deno.openSync('README.md');
+        assertEquals(typeof util.DenoSeekwithArray(file, [4,6,1]) === 'number', true);
+        file.close();
+    }
+});
+
 Deno.test({
     name: 'DenoSeekwithArray.output.value',
     fn: () => {
