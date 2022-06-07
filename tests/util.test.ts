@@ -448,3 +448,38 @@ Deno.test({
         assertEquals(util.convertSafeNumberstoUint32([4511326,649856161,105485]), 654472972);
     }
 });
+
+Deno.test({
+    name: 'DenoSeekwithArray.input.underflow',
+    fn: () => {
+        const file = Deno.openSync('README.md');
+        util.DenoSeekwithArray(file, [5,2,3,-100]);
+        assertEquals(file.seekSync(0, Deno.SeekMode.Current), 0);
+        file.close();
+    }
+});
+
+Deno.test({
+    name: 'DenoSeekwithArray.input.overflow',
+    fn: () => {
+        const file = Deno.openSync('README.md');
+        util.DenoSeekwithArray(file, [Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -Number.MAX_SAFE_INTEGER]);
+        assertEquals(file.seekSync(0, Deno.SeekMode.Current), Number.MAX_SAFE_INTEGER);
+        file.close();
+    }
+});
+
+// The way that this avoids going below zero might cause a bug later on
+Deno.test({
+    name: 'DenoSeekwithArray.output.value',
+    fn: () => {
+        const file = Deno.openSync('README.md');
+        util.DenoSeekwithArray(file, [5,2,3]);
+        assertEquals(file.seekSync(0, Deno.SeekMode.Current), 10);
+        util.DenoSeekwithArray(file, [3,3,3]);
+        assertEquals(file.seekSync(0, Deno.SeekMode.Current), 19);
+        util.DenoSeekwithArray(file, [-21, 4]);
+        assertEquals(file.seekSync(0, Deno.SeekMode.Current), 4);
+        file.close();
+    }
+});
