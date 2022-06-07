@@ -188,3 +188,124 @@ Deno.test({
         assertEquals(util.subsecUint8Array(new Uint8Array([5,12,5,67,24,0]), [2,1,1,2]), [new Uint8Array([5,12]), new Uint8Array([5]), new Uint8Array([67]), new Uint8Array([24,0])]);
     }
 });
+
+
+Deno.test({
+    name: 'util.convertUint64toUint8Array.input.underflow',
+    fn: () => {
+        try {
+            util.convertUint64toUint8Array(-1n);
+            fail();
+        } catch(e) {
+            assertEquals(e instanceof RangeError, true);
+        }
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint64toUint8Array.input.overflow',
+    fn: () => {
+        try {
+            util.convertUint64toUint8Array(18446744073709551616n);
+            fail();
+        } catch(e) {
+            assertEquals(e instanceof RangeError, true);
+        }
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint64toUint8Array.output.type',
+    fn: () => {
+        assertEquals(util.convertUint64toUint8Array(52n) instanceof Uint8Array, true);
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint64toUint8Array.output.length',
+    fn: () => {
+        assertEquals(util.convertUint64toUint8Array(52n).length, 8);
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint64toUint8Array.output.value',
+    fn: () => {
+        assertEquals(util.convertUint64toUint8Array(255n), new Uint8Array([0x00, 0x00, 0x00, 0x00,  0x00, 0x00, 0x00, 0xff]));
+        assertEquals(util.convertUint64toUint8Array(65535n), new Uint8Array([0x00, 0x00, 0x00, 0x00,  0x00, 0x00, 0xff, 0xff]));
+        assertEquals(util.convertUint64toUint8Array(4294967295n), new Uint8Array([0x00, 0x00, 0x00, 0x00,  0xff, 0xff, 0xff, 0xff]));
+        assertEquals(util.convertUint64toUint8Array(4294967296n), new Uint8Array([0x00, 0x00, 0x00, 0x01,  0x00, 0x00, 0x00, 0x00]));
+        assertEquals(util.convertUint64toUint8Array(9007199254740991n), new Uint8Array([0x00, 0x1f, 0xff, 0xff,  0xff, 0xff, 0xff, 0xff]));
+        assertEquals(util.convertUint64toUint8Array(9007199254740992n), new Uint8Array([0x00, 0x20, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00]));
+        assertEquals(util.convertUint64toUint8Array(9007199254740993n), new Uint8Array([0x00, 0x20, 0x00, 0x00,  0x00, 0x00, 0x00, 0x01]));
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint64toUint8Array.output.isEqualToConvertUint8ArraytoUint64',
+    fn: () => {
+        const v = new Uint8Array([0x00, 0x20, 0x00, 0x00,  0x00, 0x00, 0x00, 0x01]);
+        assertEquals(util.convertUint64toUint8Array(util.convertUint8ArraytoUint64(v)), v);
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint8ArraytoUint64.input.length.underflow',
+    fn: () => {
+        try {
+            util.convertUint8ArraytoUint64(new Uint8Array([0,51,23]));
+            fail();
+        } catch(e) {
+            assertEquals(e instanceof RangeError, true);
+        }
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint8ArraytoUint64.input.length.overflow',
+    fn: () => {
+        try {
+            util.convertUint8ArraytoUint64(new Uint8Array([0,51,23,33,95,54,112,55,63]));
+            fail();
+        } catch(e) {
+            assertEquals(e instanceof RangeError, true);
+        }
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint8ArraytoUint64.output.type',
+    fn: () => {
+        assertEquals(typeof util.convertUint8ArraytoUint64(new Uint8Array([0,51,23,33,95,54,112,55])) === 'bigint', true);
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint8ArraytoUint64.output.underflow',
+    fn: () => {
+        assertEquals(util.convertUint8ArraytoUint64(new Uint8Array([0,51,23,33,95,54,112,55])) >= 0n, true);
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint8ArraytoUint64.output.overflow',
+    fn: () => {
+        assertEquals(util.convertUint8ArraytoUint64(new Uint8Array([0,51,23,33,95,54,112,55])) <= 18446744073709551615n, true);
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint8ArraytoUint64.output',
+    fn: () => {
+        assertEquals(util.convertUint8ArraytoUint64(new Uint8Array([0x00, 0x20, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00])), 9007199254740992n);
+        assertEquals(util.convertUint8ArraytoUint64(new Uint8Array([0x00, 0x00, 0x00, 0x00,  0xff, 0xff, 0xff, 0xff])), 4294967295n);
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint8ArraytoUint64.output.isEqualToConvertUint64toUint8Array',
+    fn: () => {
+        const v = 9007199254740991n;
+        assertEquals(util.convertUint8ArraytoUint64(util.convertUint64toUint8Array(v)), v);
+    }
+});
