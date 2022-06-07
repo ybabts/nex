@@ -69,8 +69,14 @@ export function convertUint64toSafeNumbers(n: bigint): Array<number> {
     return v;
 }
 
-export function convertSafeNumberstoUint64(a: Array<number>) {
+export function convertSafeNumberstoUint64(a: Array<number>): bigint {
     const v = a.reduce((a,c) => a += BigInt(c), 0n);
     if(v < 0 || v > 18446744073709551615n) throw new RangeError;
+    return v;
+}
+
+export function convertSafeNumberstoUint32(a: Array<number>): number {
+    const v = a.reduce((a,c) => a += c, 0);
+    if(v < 0 || v > 4294967295) throw new RangeError;
     return v;
 }

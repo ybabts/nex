@@ -409,3 +409,42 @@ Deno.test({
         assertEquals(util.convertSafeNumberstoUint64([4511321136,649847704856161,105485653112]), 649957701830409n);
     }
 });
+
+Deno.test({
+    name: 'util.convertSafeNumberstoUint32.input.underflow',
+    fn: () => {
+        try {
+            util.convertSafeNumberstoUint32([-200, -40]);
+            fail();
+        } catch(e) {
+            assertEquals(e instanceof RangeError, true);
+        }
+    }
+});
+
+Deno.test({
+    name: 'util.convertSafeNumberstoUint32.input.overflow',
+    fn: () => {
+        try {
+            util.convertSafeNumberstoUint32(Array(2).fill(9007199254740991));
+            fail();
+        } catch(e) {
+            assertEquals(e instanceof RangeError, true);
+        }
+    }
+});
+
+Deno.test({
+    name: 'util.convertSafeNumberstoUint32.output.type',
+    fn: () => {
+        assertEquals(typeof util.convertSafeNumberstoUint32([456,4856161,153112]) === 'number', true);
+    }
+});
+
+Deno.test({
+    name: 'util.convertSafeNumberstoUint32.output.value',
+    fn: () => {
+        assertEquals(util.convertSafeNumberstoUint32([456,4856161,153112]), 5009729);
+        assertEquals(util.convertSafeNumberstoUint32([4511326,649856161,105485]), 654472972);
+    }
+});
