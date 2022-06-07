@@ -309,3 +309,65 @@ Deno.test({
         assertEquals(util.convertUint8ArraytoUint64(util.convertUint64toUint8Array(v)), v);
     }
 });
+
+Deno.test({
+    name: 'util.convertUint64toSafeNumbers.input.underflow',
+    fn: () => {
+        try {
+            util.convertUint64toSafeNumbers(-1n);
+            fail();
+        } catch(e) {
+            assertEquals(e instanceof RangeError, true);
+        }
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint64toSafeNumbers.input.overflow',
+    fn: () => {
+        try {
+            util.convertUint64toSafeNumbers(18446744093709551616n);
+            fail();
+        } catch(e) {
+            assertEquals(e instanceof RangeError, true);
+        }
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint64toSafeNumbers.output.type',
+    fn: () => {
+        assertEquals(util.convertUint64toSafeNumbers(626245425n) instanceof Array, true);
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint64toSafeNumbers.output.contents.type',
+    fn: () => {
+        assertEquals(typeof util.convertUint64toSafeNumbers(626245425n)[0] === 'number', true);
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint64toSafeNumbers.output.length.BelowMaxSafeNumber',
+    fn: () => {
+        assertEquals(util.convertUint64toSafeNumbers(90071992547409n).length, 1);
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint64toSafeNumbers.output.length.AboveMaxSafeNumber',
+    fn: () => {
+        assertEquals(util.convertUint64toSafeNumbers(9007299255740991n).length, 2);
+    }
+});
+
+Deno.test({
+    name: 'util.convertUint64toSafeNumbers.output.value',
+    fn: () => {
+        assertEquals(util.convertUint64toSafeNumbers(9007299255740991n), [9007199254740991, 100001000001]);
+        assertEquals(util.convertUint64toSafeNumbers(36007299255740991n), [9007199254740991, 9007199254740991, 9007199254740991, 8985701491518021]);
+        
+    }
+});
+

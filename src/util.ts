@@ -61,3 +61,10 @@ export function convertUint8ArraytoUint64(a: Uint8Array): bigint {
         (BigInt(a[a.length - 7]) << 48n) | 
         (BigInt(a[a.length - 8]) << 64n)) >> BigInt(0);
 }
+
+export function convertUint64toSafeNumbers(n: bigint): Array<number> {
+    if(n < 0n || n > 18446744073709551615n) throw new RangeError;
+    const v = Array(Math.ceil(Number(n / 9007199254740991n))).fill(Number.MAX_SAFE_INTEGER);
+    v.push(Number(n % BigInt(Number.MAX_SAFE_INTEGER - 1)));
+    return v;
+}
