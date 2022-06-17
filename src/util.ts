@@ -80,8 +80,3 @@ export function convertSafeNumberstoUint32(a: Array<number>): number {
     if(v < 0 || v > 4294967295) throw new RangeError;
     return v;
 }
-
-// The way that this avoids going below zero might cause a bug later on. Also when working with numbers above Number.MAX_SAFE_INTEGER you lose precision.
-export function DenoSeekwithArray(f: Deno.File, a: Array<number>): number {
-    return a.reduce((a,c) => a + c < 0 ? f.seekSync(0, Deno.SeekMode.Start) : f.seekSync(c, Deno.SeekMode.Current), 0);
-}
