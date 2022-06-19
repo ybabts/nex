@@ -65,3 +65,18 @@ Deno.test({
     }
 });
 
+Deno.test({
+    name: 'fss.parseFssBlocktoUint8Array.isEqualToParseUint8ArrayFromFssBlock',
+    fn: () => {
+        const val = new Uint8Array([2,4,2,15,2]);
+        const block = fss.parseUint8ArrayFromFssBlock(val, [{
+            property: 'inUse',
+            length: 1
+        }, {
+            property: 'nextRelation',
+            length: 4
+        }]);
+        assertEquals(val, fss.parseFssBlocktoUint8Array(block));
+    }
+});
+
