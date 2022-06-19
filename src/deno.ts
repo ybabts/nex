@@ -1,4 +1,5 @@
 
+// not fully testable
 export async function ensurePermission(p: Deno.PermissionDescriptor, state_override?: string) {
     const perm = await Deno.permissions.query(p);
     if((state_override || perm.state) === 'prompt') await Deno.permissions.request(p);
