@@ -47,3 +47,21 @@ Deno.test({
         })
     }
 });
+
+Deno.test({
+    name: 'fss.parseFssBlocktoUint8Array.output',
+    fn: () => {
+        assertEquals(fss.parseFssBlocktoUint8Array({
+            inUse: new Uint8Array([1]),
+            relation: new Uint8Array([4,1,2,5])
+        }), new Uint8Array([1, 4, 1, 2, 5]));
+    }
+});
+
+Deno.test({
+    name: 'fss.parseFssBlocktoUint8Array.input.empty',
+    fn: () => {
+        assertEquals(fss.parseFssBlocktoUint8Array({}), new Uint8Array);
+    }
+});
+

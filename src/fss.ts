@@ -10,3 +10,7 @@ export function parseUint8ArrayFromFssBlock(a: Uint8Array, fss: Array<fileSystem
     const sub = util.subsecUint8Array(a, fss.map(v => v.length));
     return Object.fromEntries(fss.map((v,i) => [v.property, sub[i]]));
 }
+
+export function parseFssBlocktoUint8Array(fss: Record<string,Uint8Array>) {
+    return util.concactUint8Arrays(Object.values(fss))
+}
