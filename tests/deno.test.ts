@@ -18,13 +18,3 @@ Deno.test({
         }).then(v => assertEquals(v, true));
     }
 });
-
-Deno.test({
-    name: 'deno.ensurePermssions.permission',
-    fn: async () => {
-        await deno.ensurePermission({name: 'read'}, 'granted').catch((e) => {
-            fail(e)
-        }).then(v => assertEquals(v, true));
-    }
-});
-
