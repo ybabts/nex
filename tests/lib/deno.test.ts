@@ -1,5 +1,5 @@
 import { assertEquals, fail } from "https://deno.land/std@0.142.0/testing/asserts.ts";
-import * as deno from '../src/deno.ts';
+import * as deno from '../../src/lib/deno.ts';
 
 Deno.test({
     name: 'deno.ensurePermssions.permission.denied',

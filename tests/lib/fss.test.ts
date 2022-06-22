@@ -1,5 +1,5 @@
 import { assertEquals, fail } from "https://deno.land/std@0.142.0/testing/asserts.ts";
-import * as fss from '../src/fss.ts';
+import * as fss from '../../src/lib/fss.ts';
 
 Deno.test({
     name: 'fss.parseUint8ArrayFromFssBlock.a.underflow',
