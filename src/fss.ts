@@ -26,3 +26,8 @@ export function readFileFromFssBlock(f: Deno.File, fss: fssBlock) {
     f.readSync(a);
     return parseUint8ArrayFromFssBlock(a, fss);
 }
+
+export function writeFromFssBlock(f: Deno.File, fss: Record<string,Uint8Array>): void {
+    const data = util.concactUint8Arrays(Object.values(fss));
+    f.writeSync(data);
+}
