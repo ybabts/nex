@@ -80,3 +80,56 @@ Deno.test({
     }
 });
 
+Deno.test({
+    name: 'fss.readFileFromFssBlock.output',
+    fn: () => {
+        const val = new Uint8Array([1,4,2,0,1,4,5,2,3]);
+        Deno.writeFileSync('ffsReadFileFromFssBlockTest', val);
+        const file = Deno.openSync('ffsReadFileFromFssBlockTest');
+        file.seekSync(0,Deno.SeekMode.Start);
+        const result = fss.readFileFromFssBlock(file, [{
+            property: 'inUse',
+            length: 1
+        }, {
+            property: 'nextRelationID',
+            length: 4
+        }, {
+            property: 'nextPropertyID',
+            length: 4
+        }]);
+        assertEquals(result, {
+            inUse: new Uint8Array([1]),
+            nextRelationID: new Uint8Array([4, 2, 0, 1]),
+            nextPropertyID: new Uint8Array([4, 5, 2, 3])
+        });
+        Deno.removeSync('ffsReadFileFromFssBlockTest');
+        file.close();
+    }
+});
+
+Deno.test({
+    name: 'fss.readFileFromFssBlock.input.overflow',
+    fn: () => {
+        const val = new Uint8Array([1,4,2,0,1,4,5]);
+        Deno.writeFileSync('ffsReadFileFromFssBlockTest', val);
+        const file = Deno.openSync('ffsReadFileFromFssBlockTest');
+        file.seekSync(0,Deno.SeekMode.Start);
+        const result = fss.readFileFromFssBlock(file, [{
+            property: 'inUse',
+            length: 1
+        }, {
+            property: 'nextRelationID',
+            length: 4
+        }, {
+            property: 'nextPropertyID',
+            length: 4
+        }]);
+        assertEquals(result, {
+            inUse: new Uint8Array([1]),
+            nextRelationID: new Uint8Array([4, 2, 0, 1]),
+            nextPropertyID: new Uint8Array([4, 5, 0, 0])
+        });
+        Deno.removeSync('ffsReadFileFromFssBlockTest');
+        file.close();
+    }
+});

@@ -17,6 +17,12 @@ export function parseUint8ArrayFromFssBlock(a: Uint8Array, fss: fssBlock): Recor
     return Object.fromEntries(fss.map((v,i) => [v.property, sub[i]]));
 }
 
-export function parseFssBlocktoUint8Array(fss: Record<string,Uint8Array>) {
-    return util.concactUint8Arrays(Object.values(fss))
+export function parseFssBlocktoUint8Array(fss: dataBlock | Record<string,Uint8Array>) {
+    return util.concactUint8Arrays(Object.values(fss));
+}
+
+export function readFileFromFssBlock(f: Deno.File, fss: fssBlock) {
+    const a = new Uint8Array(fss.reduce((a,v) => a += v.length, 0));
+    f.readSync(a);
+    return parseUint8ArrayFromFssBlock(a, fss);
 }
