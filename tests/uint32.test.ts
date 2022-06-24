@@ -58,14 +58,6 @@ Deno.test({
 });
 
 Deno.test({
-    name: 'Deno.inspect(instanceof uint32).isEqual.class.uint32.prototype.toString()',
-    fn: () => {
-        const n = new Uint32(420);
-        assertEquals(Deno.inspect(n), n.toString());
-    }
-});
-
-Deno.test({
     name: 'class.uint32.isUint32().args.n.underflow.returnsFalse',
     fn: () => {
         assertEquals(Uint32.isUint32(-32), false);
@@ -200,5 +192,13 @@ Deno.test({
     fn: () => {
         assertEquals(new Uint32(588842).toUint8Array(), new Uint8Array([0,8,252,42]));
         assertEquals(new Uint32(4874611).toUint8Array(), new Uint8Array([0,74,97,115]));
+    }
+});
+
+Deno.test({
+    name: 'class.uint32.instance.Deno.inspect().isEqual.class.uint32.prototype.toString()',
+    fn: () => {
+        const n = new Uint32(420);
+        assertEquals(Deno.inspect(n), n.toString());
     }
 });
