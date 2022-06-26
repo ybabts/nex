@@ -122,6 +122,14 @@ Deno.test({
 });
 
 Deno.test({
+    name: 'Uint64.fromUint8Array().return.value.endian',
+    fn: () => {
+        assertEquals(Uint64.fromUint8Array(new Uint8Array([0xff, 0xff, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00]), true), 65535n);
+        assertEquals(Uint64.fromUint8Array(new Uint8Array([0xff, 0xff, 0xff, 0xff,  0x00, 0x00, 0x00, 0x00]), true), 4294967295n);
+    }
+});
+
+Deno.test({
     name: 'Uint64.fromUint8Array().return = Uint64.toUint8Array().return',
     fn: () => {
         const v = 324234n;
@@ -192,6 +200,14 @@ Deno.test({
     fn: () => {
         assertEquals(new Uint64(588842n).toUint8Array(), new Uint8Array([0,0,0,0,0,8,252,42]));
         assertEquals(new Uint64(1511745616851n).toUint8Array(), new Uint8Array([0,0,1,95,251,15,123,211]));
+    }
+});
+
+Deno.test({
+    name: 'Uint64.instance.toUint8Array().return.value.endian',
+    fn: () => {
+        assertEquals(new Uint64(4294967295n).toUint8Array(true), new Uint8Array([0xff, 0xff, 0xff, 0xff,  0x00, 0x00, 0x00, 0x00]));
+        assertEquals(new Uint64(255n).toUint8Array(true), new Uint8Array([0xff, 0x00, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00]));
     }
 });
 
