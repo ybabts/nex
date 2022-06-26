@@ -32,7 +32,16 @@ export default class Uint32 {
     }
     static fromUint8Array(a: Uint8Array | Uint8ClampedArray, endian?: endian): number {
         if(a.length !== Uint32.BYTES / Uint8Array.BYTES_PER_ELEMENT) throw new RangeError;
-        if(endian) return ((a[0]) | (a[1] << 8) | (a[2] << 16) | (a[3] << 24)) >>> 0;
-        return ((a[3]) | (a[2] << 8) | (a[1] << 16) | (a[0] << 24)) >>> 0;
+        if(endian) return (
+            (a[0]) |
+            (a[1] << 8) |
+            (a[2] << 16) |
+            (a[3] << 24)) >>> 0;
+        return (
+            (a[3]) |
+            (a[2] << 8) |
+            (a[1] << 16) |
+            (a[0] << 24)
+        ) >>> 0;
     }
 }

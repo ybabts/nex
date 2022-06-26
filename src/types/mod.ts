@@ -1,7 +1,7 @@
 export type endian = boolean | undefined;
 
 export const typedArrays = {
-    Uint8Array: new Uint8Array(8),
+    Uint8Array: new Uint8Array(16),
     Uint32Array: new Uint32Array(16)
 }
 export const dataViews = {
