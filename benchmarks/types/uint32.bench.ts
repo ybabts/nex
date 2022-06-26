@@ -1,4 +1,4 @@
-import * as t from '../src/types/mod.ts';
+import Uint32 from '../../src/types/uint32.ts';
 
 const random = {
     int: (Math.random() * 1000000) | 0,
@@ -19,7 +19,7 @@ const dataViews = {
 Deno.bench({
     name: 'Uint32.toUint8Array()',
     fn() {
-        t.Uint32.toUint8Array(random.int)
+        Uint32.toUint8Array(random.int)
     }
 });
 
@@ -46,7 +46,7 @@ Deno.bench({
 Deno.bench({
     name: 'Uint32.fromUint8Array()',
     fn() {
-        t.Uint32.fromUint8Array(random.Uint8Array)
+        Uint32.fromUint8Array(random.Uint8Array)
     }
 });
 
