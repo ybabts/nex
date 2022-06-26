@@ -1,5 +1,5 @@
 import { assertEquals, fail, AssertionError } from "https://deno.land/std@0.142.0/testing/asserts.ts";
-import { Uint32 } from '../src/types.ts';
+import Uint32 from '../../src/types/uint32.ts';
 
 Deno.test({
     name: 'Uint32.toUint8Array().args.n.underflow',

@@ -1,4 +1,4 @@
-import * as t from '../src/types.ts';
+import * as t from '../src/types/mod.ts';
 
 const random = {
     int: (Math.random() * 1000000) | 0,

@@ -1,16 +1,6 @@
-type endian = boolean | undefined;
+import { endian, typedArrays, dataViews } from './mod.ts';
 
-const typedArrays = {
-    Uint8Array: new Uint8Array(8),
-    Uint32Array: new Uint32Array(16)
-}
-const dataViews = {
-    Uint8Array: new DataView(typedArrays.Uint8Array.buffer),
-    Uint32Array: new DataView(typedArrays.Uint32Array.buffer)
-}
-
-
-export class Uint32 {
+export default class Uint32 {
     static readonly BITS = 32;
     static readonly BYTES = Uint32.BITS / 8;
     static readonly MIN = 0;
